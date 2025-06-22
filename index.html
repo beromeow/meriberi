@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Happy Birthday Marie</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      overflow-x: hidden;
+      background-color: #1e1e1e;
+      color: #ccc;
+      background-image:
+        url('images/flower.png'),
+        url('images/flower2.png'),
+        url('images/flower.png'),
+        url('images/flower.png');
+      background-repeat: no-repeat;
+      background-position: 96% 26%, 5% 61%, 90% 40%, 45% 70%;
+      background-size: 300px, 60px, 68px, 250px;
+      background-blend-mode: normal;
+    }
+
+    .welcome-screen {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      background-color: #111;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+      padding: 1rem;
+    }
+
+    .loading-screen {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      background-color: #111;
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 9998;
+      padding: 1rem;
+    }
+
+    .loading-gif {
+      width: 150px;
+      height: 150px;
+      animation: pulse 2s ease-in-out infinite;
+      border-radius: 0 !important;
+      box-shadow: none !important;
+    }
+
+    @keyframes pulse {
+      0%, 100% {
+        opacity: 0.8;
+        transform: scale(1);
+      }
+      50% {
+        opacity: 1;
+        transform: scale(1.05);
+      }
+    }
+
+    .loading-text {
+      color: #888;
+      font-size: 1.2rem;
+      margin-top: 1rem;
+      text-align: center;
+    }
+
+    .welcome-gif {
+      width: 200px;
+      height: 200px;
+      margin-bottom: 1rem;
+      animation: bounce 2s ease-in-out infinite;
+      border-radius: 0 !important;
+      box-shadow: none !important;
+    }
+
+    @keyframes bounce {
+      0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0);
+      }
+      40% {
+        transform: translateY(-10px);
+      }
+      60% {
+        transform: translateY(-5px);
+      }
+    }
+
+    .welcome-screen button {
+      padding: 1rem 2rem;
+      font-size: 1.2rem;
+      background: linear-gradient(180deg, #484848, #969696);
+      border: none;
+      color: white;
+      cursor: pointer;
+      border-radius: 8px;
+      box-shadow: 0 0 20px rgba(150, 150, 150, 0.4);
+      transition: all 0.3s ease;
+    }
+
+    .rainbow-text {
+      font-size: 3rem;
+      font-weight: bold;
+      background: linear-gradient(270deg, #ff0000, #ffa500, #ffff00, #00ff00, #0000ff, #4b0082, #ee82ee);
+      background-size: 1400% 1400%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: rainbow 10s ease infinite;
+      text-align: center;
+      margin: 0 1rem;
+    }
+
+    @keyframes rainbow {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    @keyframes glow {
+      20% {
+        text-shadow: 0 0 5px currentColor, 10px 10px 55px currentColor, 10px 10px 55px currentColor;
+      }
+      50% {
+        text-shadow: 0 0 5px currentColor, 0 0 55px currentColor, 10px 10px 55px currentColor;
+      }
+    }
+
+    section {
+      min-height: 50vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 2rem 1rem;
+      position: relative;
+    }
+
+    .first-section {
+      min-height: 60vh;
+      padding: 2rem 1rem;
+    }
+
+    .svg-path-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    .svg-path-container svg {
+      width: 100%;
+      height: 200vh;
+    }
+
+    .animated-path {
+      stroke: #888;
+      stroke-width: 3;
+      fill: none;
+      stroke-dasharray: 10 15;
+      animation: dashmove 10s linear infinite;
+    }
+
+    @keyframes dashmove {
+      to {
+        stroke-dashoffset: -1000;
+      }
+    }
+
+    .content-block {
+      max-width: 700px;
+      margin-bottom: 4rem;
+      width: 100%;
+      padding: 0 1rem;
+    }
+
+    .content-block-left {
+      max-width: 700px;
+      text-align: left;
+      align-self: flex-start;
+      margin-left: 10%;
+      position: relative;
+      width: 100%;
+      padding: 0 1rem;
+    }
+
+    .content-block-left p {
+      font-size: 2rem;
+      line-height: 1.4;
+      margin: 1rem 0;
+    }
+
+    .content-block-left::before {
+      content: '';
+      position: absolute;
+      top: -50px;
+      left: -100px;
+      width: 200px;
+      height: 200px;
+      background-image: url('images/start_flower.png');
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+      z-index: -1;
+      opacity: 0.8;
+    }
+
+    .image-content-block {
+      max-width: 750px;
+      margin-bottom: 2rem;
+      width: 100%;
+      padding: 0 1rem;
+    }
+
+    .image-content-block img {
+      width: 100%;
+      height: auto;
+      max-width: 750px;
+      object-fit: contain;
+    }
+
+    .image-content-block-right {
+      max-width: 750px;
+      margin-bottom: 2rem;
+      align-self: flex-end;
+      margin-right: 10%;
+      text-align: right;
+      width: calc(90% - 1rem);
+      padding: 0 1rem;
+    }
+
+    .image-content-block-left {
+      max-width: 750px;
+      margin-bottom: 2rem;
+      align-self: flex-start;
+      margin-left: 10%;
+      text-align: left;
+      width: calc(90% - 1rem);
+      padding: 0 1rem;
+    }
+
+    .image-content-block-center {
+      max-width: 750px;
+      margin-bottom: 2rem;
+      align-self: center;
+      text-align: center;
+      width: 100%;
+      padding: 0 1rem;
+    }
+
+    .image-content-block p {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+      font-weight: 500;
+    }
+
+    .final-text-block {
+      max-width: 700px;
+      margin: 3rem auto;
+      padding: 2rem;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 15px;
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      text-align: center;
+      width: 100%;
+    }
+
+    .final-text-block p {
+      font-size: 1.5rem;
+      line-height: 1.6;
+      margin-bottom: 1rem;
+    }
+
+    img, .gif {
+      max-width: 100%;
+      height: auto;
+      border-radius: 12px;
+      box-shadow: 0 0 10px #333;
+    }
+
+    .final-image-block {
+      max-width: 300px;
+      width: 100%;
+      margin-bottom: 2rem;
+      align-self: center;
+    }
+
+    .final-image-block img {
+      border-radius: 0;
+      box-shadow: none;
+      width: 100%;
+      height: auto;
+    }
+
+    button {
+      margin-top: 1rem;
+      padding: 0.8rem 1.5rem;
+      font-size: 1rem;
+      background-color: #333;
+      color: #ccc;
+      border: 1px solid #555;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .welcome-screen button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 30px rgba(150, 150, 150, 0.7);
+    }
+
+    .fade-out {
+      opacity: 0;
+      transition: opacity 1s ease-out;
+    }
+
+    .fade-in {
+      opacity: 1 !important;
+      transition: opacity 1s ease-in;
+    }
+
+    .date-text {
+      color: #777;
+      font-size: 0.9rem;
+      text-align: center;
+      margin-top: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    @media screen and (max-width: 1024px) {
+      body {
+        background-size: 250px, 115px, 135px, 200px, 220px;
+        background-position: 95% 26%, 8% 51%, 70% 77%, 18% 85%, 82% 60%;
+      }
+
+      .rainbow-text {
+        font-size: 2.5rem;
+      }
+
+      .content-block-left p {
+        font-size: 1.8rem;
+      }
+
+      .image-content-block p {
+        font-size: 1.4rem;
+      }
+
+      .final-text-block p {
+        font-size: 1.3rem;
+      }
+
+      .content-block-left,
+      .image-content-block-right,
+      .image-content-block-left {
+        margin-left: 5%;
+        margin-right: 5%;
+        width: calc(90% - 1rem);
+      }
+
+      .content-block-left::before {
+        left: -50px;
+        width: 150px;
+        height: 150px;
+      }
+    }
+
+    @media screen and (max-width: 768px) {
+      body {
+        background-size: 180px, 80px, 100px, 140px, 170px;
+        background-position: 92% 20%, 12% 45%, 70% 70%, 20% 80%, 80% 55%;
+      }
+
+      .rainbow-text {
+        font-size: 2rem;
+        margin: 0 0.5rem;
+      }
+
+      .welcome-gif {
+        width: 150px;
+        height: 150px;
+        margin-bottom: 1.5rem;
+      }
+
+      .loading-gif {
+        width: 120px;
+        height: 120px;
+      }
+
+      .welcome-screen button {
+        padding: 0.8rem 1.5rem;
+        font-size: 1rem;
+      }
+      
+      .content-block-left {
+        margin-left: 0;
+        align-self: center;
+        text-align: center;
+        width: 100%;
+        max-width: none;
+      }
+
+      .content-block-left p {
+        font-size: 1.4rem;
+        text-align: center;
+      }
+
+      .content-block-left::before {
+        display: none;
+      }
+      
+      .image-content-block-right,
+      .image-content-block-left {
+        align-self: center;
+        text-align: center;
+        margin-left: 0;
+        margin-right: 0;
+        width: 100%;
+        max-width: none;
+      }
+
+      .image-content-block p {
+        font-size: 1.2rem;
+      }
+
+      .final-text-block {
+        margin: 2rem 0.5rem;
+        padding: 1.5rem;
+      }
+
+      .final-text-block p {
+        font-size: 1.1rem;
+      }
+
+      section {
+        padding: 1.5rem 0.5rem;
+        min-height: auto;
+      }
+
+      .first-section {
+        min-height: 50vh;
+        padding: 2rem 0.5rem;
+      }
+
+      .content-block {
+        margin-bottom: 2rem;
+      }
+
+      .final-image-block {
+        max-width: 250px;
+      }
+    }
+
+    @media screen and (max-width: 480px) {
+      body {
+        background-size: 120px, 55px, 70px, 100px, 120px;
+        background-position: 88% 15%, 15% 40%, 68% 65%, 25% 75%, 75% 50%;
+      }
+
+      .rainbow-text {
+        font-size: 1.5rem;
+      }
+
+      .welcome-gif {
+        width: 120px;
+        height: 120px;
+      }
+
+      .loading-gif {
+        width: 100px;
+        height: 100px;
+      }
+
+      .content-block-left p {
+        font-size: 1.2rem;
+      }
+
+      .image-content-block p {
+        font-size: 1.1rem;
+      }
+
+      .final-text-block p {
+        font-size: 1rem;
+      }
+
+      .final-text-block {
+        padding: 1rem;
+      }
+
+      .final-image-block {
+        max-width: 200px;
+      }
+
+      .date-text {
+        font-size: 0.8rem;
+      }
+    }
+
+    @media screen and (min-width: 1200px) {
+      body {
+        background-size: 350px, 160px, 190px, 280px, 310px;
+        background-position: 97% 26%, 4% 51%, 69% 77%, 12% 85%, 88% 60%;
+      }
+
+      .content-block-left {
+        margin-left: 15%;
+      }
+
+      .image-content-block-right {
+        margin-right: 15%;
+      }
+
+      .image-content-block-left {
+        margin-left: 15%;
+      }
+    }
+
+    #main-content {
+      position: relative;
+      z-index: 1;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="welcome-screen" id="welcome">
+    <img src="images/welcome.gif" alt="Welcome GIF" class="welcome-gif">
+    <h1 class="rainbow-text">Willkommen Marie!</h1>
+    <button onclick="enterSite()">Enter</button>
+  </div>
+
+  <div class="loading-screen" id="loading">
+    <img src="images/load.gif" alt="Loading GIF" class="loading-gif">
+    <div class="loading-text">Wird geladen...</div>
+  </div>
+
+  <div class="svg-path-container">
+    <svg viewBox="0 0 1000 2000" preserveAspectRatio="xMidYMin slice">
+      <path class="animated-path" d="M 500 0 Q 450 100, 500 200 Q 550 300, 500 400 Q 450 500, 500 600 Q 550 700, 500 800 Q 450 900, 500 1000 Q 550 1100, 500 1200 Q 450 1300, 500 1400 Q 550 1500, 500 1600 Q 450 1700, 500 1800 Q 550 1900, 500 2000" />
+    </svg>
+  </div>
+
+  <div id="main-content" style="display: none; opacity: 0;">
+    <section class="first-section">
+      <div class="content-block-left">
+        <h2 class="rainbow-text">Alles gute, Marie! <3</h2>
+        <p>Alles gute zum deinem 19. Geburtstag >_^ !!</p>
+        <p>Auch wenn das jetzt nichts großes oder krasses ist, hoffe ich, dass dir mein kleines Geburtstagsgeschenk gefällt :3</p>
+      </div>
+    </section>
+
+    <section>
+      <div class="image-content-block-right">
+        <p>Us Core</p>
+        <img src="images/mawybewo.png" alt="mawybewo">
+      </div>
+    </section>
+
+    <section>
+      <div class="image-content-block-left">
+        <p>Literally us:</p>
+        <img src="images/usstradew.jpg" alt="Stardew">
+      </div>
+    </section>
+
+    <section>
+      <div class="image-content-block-center">
+        <p>Die coolste Konversation</p>
+        <img src="images/chat.jpg" alt="chat">
+      </div>
+    </section>
+
+    <section>
+      <div class="final-text-block">
+        <p>MAWY! Ich hoffe dass das die beste Geschenk-Idee überhaupt für dich ist! (≧︿≦)</p>
+        <p>Auch wenn die Umsetzung etwas lame ist.. (ㆆ _ ㆆ)</p>
+        <p>Hatte eigentlich noch viel mehr vor, aber zeitlich war das echt schwer für mich.. TUT MIR LEID!! <(^_^)></p>
+        <p>Bleib so wie du bist und nochmal, alles gute zum Geburtstag!!!!!!!!! ;3333</p>
+        <p>~ berat ※\(^o^)/※</p>
+      </div>
+    </section>
+
+    <section>
+      <div class="final-image-block">
+        <img src="images/endflower.png" alt="End Flower">
+        <div class="date-text">♥ 22.06.2025 ♥</div>
+      </div>
+    </section>
+
+  </div>
+
+  <script>
+    function preloadImages() {
+      const imageUrls = [
+        'images/mawybewo.png',
+        'images/usstradew.jpg', 
+        'images/chat.jpg',
+        'images/start_flower.png',
+        'images/endflower.png',
+        'images/flower.png',
+        'images/flower2.png',
+        'images/flower3.png'
+      ];
+
+      const promises = imageUrls.map(url => {
+        return new Promise((resolve, reject) => {
+          const img = new Image();
+          img.onload = resolve;
+          img.onerror = resolve; // Resolve auch bei Fehlern, damit die Seite nicht hängt
+          img.src = url;
+        });
+      });
+
+      return Promise.all(promises);
+    }
+
+    function enterSite() {
+      const welcome = document.getElementById('welcome');
+      const loading = document.getElementById('loading');
+      const mainContent = document.getElementById('main-content');
+
+      // Welcome Screen ausblenden
+      welcome.classList.add('fade-out');
+      
+      setTimeout(() => {
+        welcome.style.display = 'none';
+        loading.style.display = 'flex';
+        
+        // Bilder preloaden
+        preloadImages().then(() => {
+          // Mindestens 1 Sekunde Loading Screen anzeigen
+          setTimeout(() => {
+            loading.classList.add('fade-out');
+            
+            setTimeout(() => {
+              loading.style.display = 'none';
+              mainContent.style.display = 'block';
+              // Kurz warten damit display: block wirkt, dann fade-in
+              setTimeout(() => {
+                mainContent.style.opacity = '1';
+              }, 50);
+            }, 1000);
+          }, 1000);
+        });
+      }, 1000);
+    }
+  </script>
+</body>
+</html>
